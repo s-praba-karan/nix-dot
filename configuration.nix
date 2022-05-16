@@ -10,17 +10,8 @@
       ./hardware-configuration.nix
     ];
 
-  environment.defaultPackages = [ ];
-  services.xserver.desktopManager.xterm.enable = false;
 
   nix = {
-        settings.auto-optimise-store = true;
-        settings.allowed-users = [ "prabakaran" ];
-        gc = {
-            automatic = true;
-            dates = "weekly";
-            options = "--delete-older-than 30d";
-        };
         package = pkgs.nixUnstable;
         extraOptions = ''
             experimental-features = nix-command flakes
@@ -77,17 +68,13 @@
   nixpkgs.config.allowUnfree = true;
 
   services.xserver.layout = "us";
-  hardware.bluetooth.enable = true;
+  hardware = {
+      pulseaudio.enable = true;
+      bluetooth.enable = true;
+    };
+
   sound.enable = true;
   security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
-  };
 
   fonts = {
       fonts = with pkgs; [
@@ -100,7 +87,7 @@
 
   networking.extraHosts = let
   hostsPath = https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling-porn-social/hosts;
-  hostsFile = builtins.fetchurl { url=hostsPath; sha256="sha256:0rz69q5xdppqjc849pgmq47dcib2s2ycpm9ym8mgh1prhkgnanxh"; };
+  hostsFile = builtins.fetchurl { url=hostsPath; sha256="sha256:19bv72n8ili9h62k1pj3yqi6vx6j0vbrhb4qdy3wcxwj3ylqdg45"; };
   in builtins.readFile "${hostsFile}";
 
   hardware.cpu.intel.updateMicrocode = true;
