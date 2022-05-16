@@ -46,7 +46,7 @@
   networking = {
       hostName = "nixos";
       networkmanager.enable = true;
-      interfaces.enp0s25.useDHCP = false;
+      interfaces.enp7s0.useDHCP = false;
       interfaces.wlp6s0.useDHCP = true;
       };
   };
